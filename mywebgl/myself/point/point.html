@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var vertexShaderSource=""+
+                " attribute vec4 aPos;"+
+                " void main(){" +
+                "   gl_Position=aPos;"+
+                "   gl_PointSize=20.5;"+
+                "}";
+        var fragmentShaderSource=""+"void main(){" +
+                "gl_FragColor=vec4(0.0,0.0,0.0,1.0);"+
+            "}";
+        function main(){
+            var cxt=document.getElementById("point").getContext("webgl");
+            var program=cxt.createProgram();
+            var vertexShader=cxt.createShader(cxt.VERTEX_SHADER);
+            var fragmentShader=cxt.createShader(cxt.FRAGMENT_SHADER);
+            cxt.shaderSource(vertexShader,vertexShaderSource);
+            cxt.shaderSource(fragmentShader,fragmentShaderSource);
+            cxt.compileShader(vertexShader);
+            cxt.compileShader(fragmentShader);
+            cxt.attachShader(program,vertexShader);
+            cxt.attachShader(program,fragmentShader);
+            cxt.linkProgram(program);
+            cxt.useProgram(program);
+
+            var aPosLocation=cxt.getAttribLocation(program,"aPos");
+            cxt.vertexAttrib4f(aPosLocation,0.0,0.5,1.0,1.0);
+
+            cxt.clearColor(1.0,1.0,0.0,1.0);
+            cxt.clear(cxt.COLOR_BUFFER_BIT);
+            cxt.drawArrays(cxt.POINTS,0,1);
+        }
+    </script>
+</head>
+<body onload="main()">
+<canvas id="point" height="600" width="600"></canvas>
+</body>
+</html>
