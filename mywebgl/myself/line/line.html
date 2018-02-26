@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="line" height="600" width="600"></canvas>
+<script src="../js/cuon-matrix.js"></script>
+<script src="../js/cuon-utils.js"></script>
+<script src="../js/webgl-debug.js"></script>
+<script src="../js/webgl-utils.js"></script>
+<script>
+    var vertexShaderSource=""+
+        " attribute vec4 aPos;"+
+        " void main(){" +
+        "   gl_Position=aPos;"+
+        "   gl_PointSize=1.0;"+
+        "}";
+    var fragmentShaderSource=""+"void main(){" +
+        "gl_FragColor=vec4(1.0,0.0,0.0,1.0);"+
+        "}";
+    var cxt=line.getContext("webgl");
+    initShaders(cxt,vertexShaderSource,fragmentShaderSource);
+    var program=createProgram(cxt,vertexShaderSource,fragmentShaderSource);
+
+    var data=new Float32Array([
+
+        -.5,.5,.5,.5,-.5,-.5,.5,-.5
+    ]);
+    var buffer=cxt.createBuffer();debugger;
+    cxt.bindBuffer(cxt.ARRAY_BUFFER,buffer);
+    cxt.bufferData(cxt.ARRAY_BUFFER,data,cxt.STATIC_DRAW);
+    var posLocation=cxt.getAttribLocation(program,"aPos");
+    cxt.vertexAttribPointer(posLocation,2,cxt.FLOAT,false,0,0);
+    cxt.enableVertexAttribArray(posLocation);
+    cxt.clearColor(0.0,0.0,.0,1.0);
+    cxt.clear(cxt.COLOR_BUFFER_BIT);
+    cxt.drawArrays(cxt.LINE_STRIP,0,4);
+</script>
+</body>
+</html>
